@@ -6,29 +6,13 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 20:22:37 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/12 20:42:14 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:30:51 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
 int	ft_str_is_printable(char *str);
-
-int	ft_str_is_printable(char *str)
-{
-	char	del;
-
-	if (!(*str))
-		return (1);
-	del = '\177';
-	while (*str)
-	{
-		if (*str < ' ' || *str > del)
-			return (0);
-		str++;
-	}
-	return (1);
-}
 
 int	main(void)
 {

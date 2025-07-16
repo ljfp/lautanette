@@ -6,18 +6,13 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 19:15:09 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/10 21:52:47 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:27:16 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
 void	ft_ultimate_ft(int *********nb);
-
-void	ft_ultimate_ft(int *********nb)
-{
-	*********nb = 42;
-}
 
 int	main(void)
 {

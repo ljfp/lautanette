@@ -6,19 +6,13 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 22:30:38 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/10 22:37:10 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:28:54 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
 void	ft_div_mod(int a, int b, int *div, int *mod);
-
-void	ft_div_mod(int a, int b, int *div, int *mod)
-{
-	*div = a / b;
-	*mod = a % b;
-}
 
 int	main(void)
 {

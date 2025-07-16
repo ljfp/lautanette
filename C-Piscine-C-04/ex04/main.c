@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-int		base_error(char *base);
 void	ft_putnbr_base(int nbr, char *base);
-void	ft_putchar(char c);
 
 int main(void)
 {

@@ -6,43 +6,13 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/13 00:09:27 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/13 00:43:03 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:35:25 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-int				ft_strlen(char *str);
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
-
-int	ft_strlen(char *str)
-{
-	int	c;
-
-	c = 0;
-	while (*str != '\0')
-	{
-		c++;
-		str++;
-	}
-	return (c);
-}
-
-unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
-{
-	unsigned int	i;
-
-	if (size == 0)
-		return (ft_strlen(src));
-	i = 0;
-	while (i < size -1 && src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (ft_strlen(src));
-}
 
 int main(void)
 {

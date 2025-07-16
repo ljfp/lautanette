@@ -6,26 +6,13 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 12:29:09 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/11 12:39:20 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:29:41 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
 int	ft_strlen(char *str);
-
-int	ft_strlen(char *str)
-{
-	int	c;
-
-	c = 0;
-	while (*str != '\0')
-	{
-		c++;
-		str++;
-	}
-	return (c);
-}
 
 int	main(void)
 {

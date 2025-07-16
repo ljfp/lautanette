@@ -6,7 +6,7 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 14:48:40 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/14 15:28:14 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:38:42 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,6 @@
 #include <stdio.h>
 
 char	*ft_strstr(char *str, char *to_find);
-
-char	*ft_strstr(char *str, char *to_find)
-{
-	char	*s1;
-	char	*s2;
-
-	if (!(*to_find))
-		return (str);
-	while (*str)
-	{
-		s1 = str;
-		s2 = to_find;
-		while (*s1 && *s2 && (*s1 == *s2))
-		{
-			s1++;
-			s2++;
-		}
-		if (!(*s2))
-			return (str);
-		str++;
-	}
-	return (0);
-}
 
 int main(void)
 {

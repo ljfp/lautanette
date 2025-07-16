@@ -6,79 +6,13 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 22:14:15 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/14 12:12:07 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:35:03 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
 char	*ft_strcapitalize(char *str);
-void	low_to_upper(char *str);
-void	upper_to_low(char *str);
-int		is_alphanumeric(char c);
-
-void	low_to_upper(char *str)
-{
-	if (*str >= 'a' && *str <= 'z')
-	{
-		*str -= 32;
-	}
-}
-
-void	upper_to_low(char *str)
-{
-	if (*str >= 'A' && *str <= 'Z')
-	{
-		*str += 32;
-	}
-}
-
-int	is_alphanumeric(char c)
-{
-	if ((c >= '0' && c <= '9')
-		|| (c >= 'a' && c <= 'z')
-		|| (c >= 'A' && c <= 'Z'))
-	{
-		return (0);
-	}
-	else
-	{
-		return (1);
-	}
-}
-
-int	check_prev(char *str)
-{
-	char	prev;
-
-	prev = *(str - 1);
-	if (!(is_alphanumeric(prev)))
-	{
-		return (0);
-	}
-	else
-	{
-		return (1);
-	}
-}
-
-char	*ft_strcapitalize(char *str)
-{
-	char	*ptr;
-
-	ptr = str;
-	low_to_upper(str);
-	str++;
-	while (*str)
-	{
-		if (check_prev(str) != 0)
-			low_to_upper(str);
-		else
-			upper_to_low(str);
-		str++;
-	}
-	return (ptr);
-}
 
 int	main(void)
 {

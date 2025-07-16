@@ -6,7 +6,7 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/11 13:31:28 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/12 17:11:48 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:30:31 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include <string.h>
 
 char	*ft_strcpy(char *dest, char *src);
-
-char	*ft_strcpy(char *dest, char *src)
-{
-	char	*dest_start = dest;
-	while (*dest != '\0')
-	{
-		*dest = *src;
-		dest++;
-		src++;
-	}
-	*dest = '\0';
-
-	return dest_start;
-}
 
 int main(int argc, char *argv[])
 {

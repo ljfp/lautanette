@@ -6,7 +6,7 @@
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 20:50:52 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/12 21:44:52 by lauferna         ###   ########.fr       */
+/*   Updated: 2025/07/16 21:34:33 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,6 @@
 #include <string.h>
 
 char	*ft_strupcase(char *str);
-
-char	*ft_strupcase(char *str)
-{
-	char	*ptr;
-
-	ptr = str;
-	while (*str)
-	{
-		if (*str >= 'a' && *str <= 'z')
-		{
-			*str -= 32;
-		}
-		str++;
-	}
-	return (ptr);
-}
 
 int	main(void)
 {

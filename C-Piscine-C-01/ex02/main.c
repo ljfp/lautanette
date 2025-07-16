@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ft.c                                            :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lauferna <ljfp@ljfp.xyz>                   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/10 18:52:22 by lauferna          #+#    #+#             */
-/*   Updated: 2025/07/10 20:07:20 by lauferna         ###   ########.fr       */
+/*   Created: 2025/07/10 21:57:50 by lauferna          #+#    #+#             */
+/*   Updated: 2025/07/16 21:28:42 by lauferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 
-void	ft_ft(int *nbr);
-
-void	ft_ft(int *nbr)
-{
-	*nbr = 42;
-}
+void	ft_swap(int *a, int *b);
 
 int	main(void)
 {
-	int	n;
+	int	x;
+	int	y;
 
-	n = 10;
-	printf("Before: number = %d\n", n);
-	ft_ft(&n);
-	printf("After: number = %d\n", n);
+	x = 10;
+	y = 20;
+	printf("Initial values: x = %d, y = %d\n", x, y);
+	ft_swap(&x, &y);
+	printf("After ft_swap: x = %d, y = %d\n", x, y);
 	return (0);
 }
