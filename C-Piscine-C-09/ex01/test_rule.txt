@@ -1,0 +1,2 @@
+test: $(NAME) main.c
+    cc -Wall -Wextra -Werror main.c -Iincludes -L. -lft -o test_libft
