@@ -6,7 +6,6 @@ import shutil
 import subprocess
 from pathlib import Path
 
-import git
 from halo import Halo
 from utils.ExecutionContext import TestRunInfo, get_context, get_timeout, has_bonus, is_strict, set_bonus, set_timeout
 from utils.TerminalColors import TC
@@ -104,10 +103,31 @@ class BaseTester:
 
 	def prepare_ex_files(self):
 
-		def check_and_delete(repo, file):
-			if os.path.isfile(file) and repo.ignored(file):
-				logger.info(f"removing ignored file: {file}")
-				os.remove(file)
+		def load_gitignore(root: Path):
+			patterns = []
+			ignore_file = root / ".gitignore"
+			if ignore_file.exists():
+				with open(ignore_file, "r") as f:
+					for line in f:
+						line = line.strip()
+						if not line or line.startswith('#'):
+							continue
+						patterns.append(line)
+			return patterns
+
+		def is_ignored(rel_path: Path, patterns):
+			# very lightweight matcher: support suffix and prefix wildcards and directory ignores
+			p = rel_path.as_posix()
+			for pat in patterns:
+				if pat.endswith('/') and p.startswith(pat.rstrip('/')):
+					return True
+				if pat.startswith('*') and p.endswith(pat.lstrip('*')):
+					return True
+				if pat.endswith('*') and p.startswith(pat.rstrip('*')):
+					return True
+				if pat == p:
+					return True
+			return False
 
 		if os.path.exists(self.temp_dir):
 			logger.info(f"Removing already present directory {self.temp_dir}")
@@ -116,16 +136,20 @@ class BaseTester:
 		logger.info(f"copying {self.source_dir} to {self.temp_dir}")
 		shutil.copytree(self.source_dir, self.temp_dir)
 
+		# Remove any files that are ignored by user's .gitignore (best-effort, no GitPython)
 		try:
-			repo = git.Repo(self.temp_dir)
-			for path in Path(self.temp_dir).glob("*"):
-				if not path.match(".git") and path.is_dir():
-					for file in path.rglob("*"):
-						check_and_delete(repo, file)
-				if path.is_file():
-					check_and_delete(repo, path)
-			logger.info(f"removing {self.temp_dir / '.git'}")
-			shutil.rmtree(self.temp_dir / ".git")
+			patterns = load_gitignore(self.temp_dir)
+			if patterns:
+				for path in Path(self.temp_dir).rglob('*'):
+					rel = path.relative_to(self.temp_dir)
+					if path.is_file() and is_ignored(rel, patterns):
+						logger.info(f"removing ignored file: {path}")
+						os.remove(path)
+			# Always remove an accidental .git in the copied tree
+			git_dir = self.temp_dir / ".git"
+			if git_dir.exists():
+				logger.info(f"removing {git_dir}")
+				shutil.rmtree(git_dir)
 		except Exception as ex:
 			logger.exception(ex)
 
