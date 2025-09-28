@@ -7,7 +7,7 @@ from utils.ExecutionContext import console
 
 logger = logging.getLogger("leak-check")
 
-leaks_regex = re.compile(".* (\d+) leak(?:s)? for (\d+) total.*")
+leaks_regex = re.compile(r".* (\d+) leak(?:s)? for (\d+) total.*")  # Use raw string for regex to avoid invalid escape sequence warnings
 
 
 class LeakException(Exception):

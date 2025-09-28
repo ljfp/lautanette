@@ -6,7 +6,7 @@ from utils.ExecutionContext import console
 from testers.BaseExecutor import BaseExecutor
 from utils.Utils import run_filter, show_errors_str
 
-test_line_regex = re.compile("^([^#]+)# (\d+):.*\[(\w+)\]$")
+test_line_regex = re.compile(r"^([^#]+)# (\d+):.*\[(\w+)\]$")
 
 
 class Vfurname(BaseExecutor):

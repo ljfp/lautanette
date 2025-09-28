@@ -307,7 +307,7 @@ class Fsoares(BaseExecutor):
 				f.writelines(content)
 			logger.info(f"file {file} rewritten")
 
-		p = subprocess.run('grep --include=\*.{c,h} -rnw ../__my_srcs -e "\\bmain\\b" | grep -v "//"',
+		p = subprocess.run(r'grep --include=\*.{c,h} -rnw ../__my_srcs -e "\bmain\b" | grep -v "//"',
 		                   capture_output=True,
 		                   shell=True,
 		                   text=True)

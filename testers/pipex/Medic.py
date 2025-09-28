@@ -8,7 +8,7 @@ from utils.ExecutionContext import console
 
 logger = logging.getLogger("px-medic")
 
-test_line_regex = re.compile("^([^#]+)# (\d+):.*\[(\w+)\]$")
+test_line_regex = re.compile(r"^([^#]+)# (\d+):.*\[(\w+)\]$")
 
 
 class Medic(BaseExecutor):
