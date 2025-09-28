@@ -29,7 +29,7 @@ int show_result(int res, char *prefix)
 void pf_show_timeout()
 {
 	fprintf(errors_file, BRED "Error" NC " in test %i: " CYN "%s" NC ": " BRED "%s" NC "\n",
-			g_test, signature, ("Timeout occurred. You can increase the timeout by executing " BWHT "francinette --timeout <number of seconds>" NC));
+			g_test, signature, ("Timeout occurred. You can increase the timeout by executing " BWHT "lautanette --timeout <number of seconds>" NC));
 	cout(YEL "%i.KO %s\n" NC, g_test++, "TIMEOUT");
 }
 
@@ -75,7 +75,7 @@ void pf_sigbus(int signal)
 
 void pf_sigalarm(int signal)
 {
-	pf_show_signal_msg(("Timeout occurred. You can increase the timeout by executing " BWHT "francinette --timeout <number of seconds>" NC), "Timeout", signal);
+	pf_show_signal_msg(("Timeout occurred. You can increase the timeout by executing " BWHT "lautanette --timeout <number of seconds>" NC), "Timeout", signal);
 }
 
 void pf_handle_signals()

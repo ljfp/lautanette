@@ -14,7 +14,7 @@ from utils.TerminalColors import TC
 from utils.TraceToLine import TraceToLine, open_utf8
 
 FILE_SHOW_LINES = 50
-REPO_URL = "https://raw.githubusercontent.com/xicodomingues/francinette/master/"
+REPO_URL = "https://raw.githubusercontent.com/ljfp/lautanette/master/"
 
 logger = logging.getLogger("utils")
 
@@ -22,7 +22,7 @@ logger = logging.getLogger("utils")
 def show_banner(project):
 	columns = shutil.get_terminal_size((80, 23)).columns
 	#print(columns)
-	message = f"[blue]Welcome to [b][purple]Francinette[/b][blue], a 42 tester framework!"
+	message = f"[blue]Welcome to [b][purple]Lautanette[/b][blue], a 42 tester framework!"
 	submessage = f"{project}"
 	project_message = f"[b][yellow]{project}[/b][cyan]"
 	size = 30 - len(submessage)

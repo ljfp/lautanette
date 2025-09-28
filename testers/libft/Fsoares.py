@@ -4,7 +4,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
-from pipes import quote
+from shlex import quote
 from tempfile import tempdir
 from typing import Set
 
@@ -164,5 +164,5 @@ class Fsoares():
 			build_error_file(errors)
 			show_errors_file(Path(self.temp_dir), "errors_color.log", "error.log")
 		if not is_strict() and not errors and not self.missing:
-			print(f"Want some more thorough tests? run '{TC.B_WHITE}francinette --strict{TC.NC}'.")
+			print(f"Want some more thorough tests? run '{TC.B_WHITE}lautanette --strict{TC.NC}'.")
 		return errors

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a bug with Francinette
+about: Report a bug with Lautanette
 title: ''
 labels: ''
 assignees: ''
@@ -13,4 +13,4 @@ Please include a description of the problem as well has what operation system yo
  - The architecture of the CPU if it is not x64 (for example ARM Macs (M1, M2))
 
 **Additional information**
-If you think it could be relevant, please include the file that is under `~/francinette/logs/execution.log`
+If you think it could be relevant, please include the file that is under `~/lautanette/logs/execution.log`

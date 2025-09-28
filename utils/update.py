@@ -8,7 +8,6 @@ from urllib.request import urlopen
 
 import certifi
 import toml
-from git import Repo
 from packaging import version as vs
 from rich import print
 
@@ -69,7 +68,7 @@ def update_paco():
 		do_update()
 		return
 
-	print(f"There is a new version of francinette ({current} -> {new_version}), do you wish to update?")
+	print(f"There is a new version of lautanette ({current} -> {new_version}), do you wish to update?")
 	while (True):
 		choice = input("[Y]es / [N]o / [A]lways / [D]o not update ever: ").lower()
 		if choice.startswith('y'):

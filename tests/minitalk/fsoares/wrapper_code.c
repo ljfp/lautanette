@@ -86,7 +86,7 @@ void sigbus(int signal)
 
 void sigalarm(int signal)
 {
-	show_signal_msg(("Timeout occurred. You can increase the timeout by executing " P__BWHT "francinette --timeout <number of seconds>" P__NC), "Timeout", signal);
+	show_signal_msg(("Timeout occurred. You can increase the timeout by executing " P__BWHT "lautanette --timeout <number of seconds>" P__NC), "Timeout", signal);
 }
 
 void handle_signals()

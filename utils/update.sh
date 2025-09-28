@@ -12,18 +12,18 @@ if [ "$(uname)" != "Darwin" ]; then
 fi
 
 cd temp_____ || exit
-rm -rf francinette
+rm -rf lautanette
 
 # download github
-echo "Downloading francinette repo..."
-git clone --quiet --recursive https://github.com/xicodomingues/francinette.git 2> /dev/null
+echo "Downloading lautanette repo..."
+git clone --quiet --recursive https://github.com/ljfp/lautanette.git 2> /dev/null
 
-cp -r francinette .. 2> /dev/null
+cp -r lautanette .. 2> /dev/null
 
 cd "$HOME" || exit
 rm -rf temp_____
 
-cd "$HOME"/francinette || exit
+cd "$HOME"/lautanette || exit
 
 # activate venv
 . venv/bin/activate
@@ -35,4 +35,4 @@ if ! pip3 install --disable-pip-version-check -q -r requirements.txt ; then
 	exit 1
 fi
 
-echo -e "\033[1;37mFrancinette is updated. You can use it again!\033[0m"
+echo -e "\033[1;37mLautanette is updated. You can use it again!\033[0m"

@@ -9,7 +9,6 @@ from argparse import ArgumentParser
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-from git import Repo
 from testers.cpiscine.CPiscine import CPiscine
 from testers.get_next_line.GetNextLine import GetNextLine
 from testers.libft.Libft import Libft
@@ -61,7 +60,7 @@ def guess_project(current_path):
 		if p:
 			return p
 
-	raise Exception(f"Francinette needs to be executed inside a project folder\n" +
+	raise Exception(f"Lautanette needs to be executed inside a project folder\n" +
 	                f"{TC.NC}If you are in a project folder, please make sure that you have a valid Makefile " +
 	                f"and that you are creating the expected turn in files (for example 'libft.a')")
 
@@ -73,20 +72,27 @@ def clone(repo, basedir, current_dir):
 		shutil.rmtree(repo_dir_temp)
 
 	logger.info(f"Cloning repo {repo} to {repo_dir_temp} and creating a copy of the repo under the username")
-	cloned = Repo.clone_from(repo, repo_dir_temp)
+	# Clone the remote repo into a temporary directory
+	subprocess.run(["git", "clone", "--quiet", repo, repo_dir_temp], check=True)
 	os.chdir(repo_dir_temp)
 
 	project = guess_project(Path("."))
-	master = cloned.head.reference
-	author_name = str(master.commit.author.email).split('@')[0].replace(" ", "_")
 
+	# Get author email from last commit, derive a folder label (same logic as before)
+	try:
+		completed = subprocess.run(["git", "log", "-1", "--pretty=%ae"], capture_output=True, text=True, check=True)
+		email = completed.stdout.strip()
+	except subprocess.CalledProcessError:
+		email = "unknown@local"
+	author_name = str(email).split('@')[0].replace(" ", "_")
 	if '+' in author_name:
 		author_name = author_name.split('+')[1]
 
 	repo_copy_dir = os.path.join(current_dir, author_name + "_" + project.name)
 	if os.path.exists(repo_copy_dir):
 		shutil.rmtree(repo_copy_dir)
-	cloned.clone(repo_copy_dir)
+	# Create a local clone into the destination directory
+	subprocess.run(["git", "clone", "--quiet", repo_dir_temp, repo_copy_dir], check=True)
 	logger.info(f"Created a copy of the repository in {repo_copy_dir}")
 	return repo_copy_dir
 
@@ -100,7 +106,7 @@ def main():
 	original_dir = os.path.abspath(os.path.join(os.path.basename(pwd), ".."))
 	exercises = None
 
-	parser = ArgumentParser("francinette",
+	parser = ArgumentParser("lautanette",
 	                        description=textwrap.dedent("""
 			A micro framework that allows you to test your code with more ease.
 
@@ -111,7 +117,7 @@ def main():
 	parser.add_argument("git_repo", nargs="?", help="If present, it uses this repository to clone the exercises from")
 	parser.add_argument("exercise", nargs="*", help="If present, it executes the passed tests")
 	parser.add_argument("-v", "--verbose", action="store_true", help="Activates verbose mode (basically debug)")
-	parser.add_argument("-u", "--update", action="store_true", help="forces francinette to update")
+	parser.add_argument("-u", "--update", action="store_true", help="forces lautanette to update")
 	parser.add_argument("-s",
 	                    "--strict",
 	                    action="store_true",

@@ -11,7 +11,7 @@ console = Console()
 @dataclass
 class TestRunInfo:
 	source_dir: Path 	# location of the code to test
-	base_dir: Path		# location of francinette
+	base_dir: Path		# location of lautanette
 	ex_to_execute: List[str]
 	args: Namespace
 	has_bonus: bool = False

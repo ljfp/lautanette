@@ -5,10 +5,10 @@ cd "$HOME" || exit
 mkdir temp_____
 
 cd temp_____ || exit
-rm -rf francinette
+rm -rf lautanette
 
-# download github
-git clone --recursive https://github.com/xicodomingues/francinette.git
+# download github (fork)
+git clone --recursive https://github.com/ljfp/lautanette.git
 
 if [ "$(uname)" != "Darwin" ]; then
 	echo "Admin permissions needed to install C compilers, python, and upgrade current packages"
@@ -30,14 +30,14 @@ if [ "$(uname)" != "Darwin" ]; then
 	esac
 fi
 
-cp -r francinette "$HOME"
+cp -r lautanette "$HOME"
 
 cd "$HOME" || exit
 rm -rf temp_____
 
-cd "$HOME"/francinette || exit
+cd "$HOME"/lautanette || exit
 
-# start a venv inside francinette
+# start a venv inside lautanette
 if ! python3 -m venv venv ; then
 	echo "Please make sure than you can create a python virtual environment"
 	echo 'Contact me if you have no idea how to proceed (fsoares- on slack)'
@@ -65,18 +65,18 @@ fi
 echo "try to add alias in file: $RC_FILE"
 
 # set up the alias
-if ! grep "francinette=" "$RC_FILE" &> /dev/null; then
-	echo "francinette alias not present"
-	printf "\nalias francinette=%s/francinette/tester.sh\n" "$HOME" >> "$RC_FILE"
+if ! grep "lautanette=" "$RC_FILE" &> /dev/null; then
+	echo "lautanette alias not present"
+	printf "\nalias lautanette=%s/lautanette/tester.sh\n" "$HOME" >> "$RC_FILE"
 fi
 
 if ! grep "paco=" "$RC_FILE" &> /dev/null; then
 	echo "Short alias not present. Adding it"
-	printf "\nalias paco=%s/francinette/tester.sh\n" "$HOME" >> "$RC_FILE"
+	printf "\nalias paco=%s/lautanette/tester.sh\n" "$HOME" >> "$RC_FILE"
 fi
 
 # print help
-"$HOME"/francinette/tester.sh --help
+"$HOME"/lautanette/tester.sh --help
 
 # automatically replace current shell with new one.
 exec "$SHELL"

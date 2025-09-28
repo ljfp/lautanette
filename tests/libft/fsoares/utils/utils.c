@@ -18,7 +18,7 @@ FILE *errors_file;
 void show_timeout()
 {
 	fprintf(errors_file, BRED "Error" NC " in test %i: " CYN "%s" NC ": " BRED "%s" NC "\n",
-			g_test, signature, ("Timeout occurred. You can increase the timeout by executing " BWHT "francinette --timeout <number of seconds>" NC));
+			g_test, signature, ("Timeout occurred. You can increase the timeout by executing " BWHT "lautanette --timeout <number of seconds>" NC));
 	printf(YEL "%i.KO %s\n" NC, g_test++, "TIMEOUT");
 }
 
@@ -64,7 +64,7 @@ void sigbus(int signal)
 
 void sigalarm(int signal)
 {
-	show_signal_msg(("Timeout occurred. You can increase the timeout by executing " BWHT "francinette --timeout <number of seconds>" NC), "Timeout", signal);
+	show_signal_msg(("Timeout occurred. You can increase the timeout by executing " BWHT "lautanette --timeout <number of seconds>" NC), "Timeout", signal);
 }
 
 void handle_signals()

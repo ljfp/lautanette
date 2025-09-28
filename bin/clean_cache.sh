@@ -65,8 +65,8 @@ find "$HOME"/Desktop -name .DS_Store -depth -exec /bin/rm {} \; &>/dev/null
 /bin/rm -rf "$HOME"/Desktop/Piscine\ Rules\ *.mp4
 /bin/rm -rf "$HOME"/Desktop/PLAY_ME.webloc
 
-#things related to francinette
-/bin/rm -rf "$HOME"/francinette/temp
+#things related to lautanette
+/bin/rm -rf "$HOME"/lautanette/temp
 
 #calculating the new available storage after cleaning
 Storage=$(df -h "$HOME" | grep "$HOME" | awk '{print($4)}' | tr 'i' 'B')
