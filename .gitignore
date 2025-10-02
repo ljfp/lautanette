@@ -136,4 +136,4 @@ dmypy.json
 /logs/
 utils/update.toml
 
-libft/
+/libft/
