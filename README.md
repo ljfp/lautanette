@@ -1,20 +1,21 @@
 # Lautanette
 
-Community-maintained fork of Francinette. See CREDITS.md for acknowledgments. This fork modernizes the codebase, removes submodules by bundling tests in-repo, and updates installer URLs.
+Community-maintained continuation of [Francinette](https://github.com/xicodomingues/francinette). This project picks up where the original left off: keeping the tool maintained, modernizing the codebase, removing submodules by bundling tests in-repo, and updating installer URLs. See `CREDITS.md` for detailed acknowledgments and legacy attributions.
 
-## :exclamation: This repo is long abandoned. It's probably way out of date, and does not work on newer systems. Please seek other alternatives. :exclamation:
+## Background
+
+The original Francinette repository went unmaintained for a stretch in early 2025. Lautanette exists to continue that work under active stewardship, ensuring the tester keeps up with new operating systems, dependency updates, and the evolving 42 curriculum. If you were previously directed to "seek other alternatives," that notice no longer applies—this fork *is* the maintained successor.
 
 # Also: write your own tests!!
 #
 
 An easy to use testing framework for the 42 projects.
 
-Use `lautanette` or `paco` inside a project folder to run it.
+Use `lautanette` inside a project folder to run it.
 
 Currently has tests for: `libft`, `ft_printf`, `get_next_line`, `minitalk` and `pipex`.
 
-`Lautanette` is only tested and confirmed to work on MacOS on non ARM chips. Some testers may work on
-Linux and ARM, but I give no guaranties of any test working or even compiling.
+`Lautanette` is only tested and confirmed to work on GNU/Linux systems running on CPUs with x86_64 instructions set.
 
 ## :exclamation: Important note:
 
@@ -185,7 +186,7 @@ Now it should work. If it does not, don't be afraid to contact me.
 
 ## Acknowledgments
 
-* To 42 for providing me this opportunity
+* To [xicodomingues](https://github.com/xicodomingues) for [francinette](https://github.com/xicodomingues/francinette)
 * To [Tripouille](https://github.com/Tripouille) for [libftTester](https://github.com/Tripouille/libftTester), [gnlTester](https://github.com/Tripouille/gnlTester) and [printfTester](https://github.com/Tripouille/printfTester)
 * To [jtoty](https://github.com/jtoty) and [y3ll0w42](https://github.com/y3ll0w42) for [libft-war-machine](https://github.com/y3ll0w42/libft-war-machine)
 * To [alelievr](https://github.com/alelievr) for [libft-unit-test](https://github.com/alelievr/libft-unit-test) and [printf-unit-test](https://github.com/alelievr/printf-unit-test)
