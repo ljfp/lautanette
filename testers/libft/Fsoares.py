@@ -5,18 +5,18 @@ import shutil
 import subprocess
 from pathlib import Path
 from shlex import quote
-from tempfile import tempdir
 from typing import Set
 
 from halo import Halo
 from pexpect import run
 from testers.libft.BaseExecutor import remove_ansi_colors
+from testers.libft.SuiteResult import SuiteResult
 from utils.ExecutionContext import get_timeout, has_bonus, is_strict
 from utils.TerminalColors import TC
 from utils.Utils import is_linux, is_mac, open_ascii, show_errors_file
 from utils.TraceToLine import program_name_start
 
-logger = logging.getLogger("fsoares")
+logger = logging.getLogger("libft-core")
 
 test_regex = re.compile(r"ft_(\w+)\s*: (.*)")
 trace_regex = re.compile(r"\d+\s+[\w.?]+\s+[\d\w]+ (\w+) \+ (\d+)")
@@ -26,9 +26,9 @@ errors_color_name = "errors_color.log"
 
 class Fsoares():
 
-	name = "fsoares"
-	folder = name
-	git_url = "my own tests"
+	name = "Lautanette libft core"
+	folder = "fsoares"
+	git_url = "Built-in Lautanette suite"
 
 	def __init__(self, tests_dir, temp_dir, to_execute: Set[str], missing) -> None:
 		self.temp_dir = os.path.join(temp_dir, self.folder)
@@ -45,7 +45,10 @@ class Fsoares():
 		result = self.execute_tests()
 		logger.info(f"result: {result}")
 		print()
-		return self.show_failed(result)
+		failed, logs, notes = self.show_failed(result)
+		suite_result = SuiteResult(self.name, failed_functions=failed, log_files=logs)
+		suite_result.extend_notes(*notes)
+		return suite_result
 
 	def recompile_with_sanitizer(self):
 		other_dir = Path(self.temp_dir, "..", "__my_srcs")
@@ -72,7 +75,8 @@ class Fsoares():
 			shutil.copy(other_dir / "libft.a", Path(self.temp_dir, "libft.a"))
 
 	def compile_test(self):
-		text = f"{TC.CYAN}Compiling tests: {TC.B_WHITE}{self.folder}{TC.NC} (my own)"
+		suite_label = f"{self.name} suite"
+		text = f"{TC.CYAN}Compiling tests: {TC.B_WHITE}{suite_label}{TC.NC}"
 		with Halo(text=text) as spinner:
 			self.recompile_with_sanitizer()
 
@@ -159,10 +163,15 @@ class Fsoares():
 		for func, res, lines in output:
 			if (is_error(res)):
 				errors.append(func)
-		logger.warn(f"found errors for functions: {errors}")
+		logger.warning(f"found errors for functions: {errors}")
+		log_path = None
 		if errors:
 			build_error_file(errors)
 			show_errors_file(Path(self.temp_dir), "errors_color.log", "error.log")
+			log_path = Path(self.temp_dir, errors_color_name)
+		notes = []
 		if not is_strict() and not errors and not self.missing:
-			print(f"Want some more thorough tests? run '{TC.B_WHITE}lautanette --strict{TC.NC}'.")
-		return errors
+			note = f"Want stricter coverage? run '{TC.B_WHITE}lautanette --strict{TC.NC}'."
+			print(note)
+			notes.append("Strict mode offers extra malloc guards.")
+		return errors, ([log_path] if log_path else []), notes

@@ -50,6 +50,7 @@ class BaseTester:
 	def execute_testers(self):
 		show_banner(self.name)
 		testers = self.test_selector()
+		self.suite_reports = []
 		with Halo(TC.CYAN + "Preparing framework" + TC.NC) as spinner:
 			self.prepare_ex_files()
 			spinner.succeed()
@@ -204,7 +205,18 @@ class BaseTester:
 			self.prepare_tests(tester)
 
 			tx = tester(self.tests_dir, self.temp_dir, to_execute, missing)
-			return (tester.name, tx.execute())
+			result = tx.execute()
+			from testers.libft.SuiteResult import SuiteResult
+			if isinstance(result, SuiteResult):
+				self.suite_reports.append(result)
+				return (tester.name, result.failed_functions)
+			self.suite_reports.append(
+				SuiteResult(
+					tester.name,
+					failed_functions=list(result) if isinstance(result, (list, tuple, set)) else [str(result)],
+				)
+			)
+			return (tester.name, result)
 		except Exception as ex:
 			print(ex)
 			if 'fraaaa' in str(get_context().base_dir):
@@ -269,4 +281,16 @@ class BaseTester:
 		tests_ok = [test for test in to_execute if test not in error_funcs]
 		if tests_ok:
 			print(f"\n{TC.B_GREEN}Passed tests{TC.NC}: {', '.join(tests_ok)}")
+
+		if getattr(self, "suite_reports", None):
+			print(f"\n{TC.B_CYAN}Detailed suite diagnostics{TC.NC}:")
+			for report in self.suite_reports:
+				status = "OK" if not report.failed_functions else f"KO ({len(report.failed_functions)} failing)"
+				print(f"  • {TC.B_WHITE}{report.suite_name}{TC.NC}: {status}")
+				if report.failed_functions:
+					print(f"    └─ Failed functions: {', '.join(report.failed_functions)}")
+				for note in report.notes:
+					print(f"    └─ {note}")
+				for path in report.log_files:
+					print(f"    └─ Logs: {path}")
 		exit(0)

@@ -6,12 +6,9 @@ from pathlib import Path
 
 from halo import Halo
 from testers.BaseTester import BaseTester, run_command
-from testers.libft.Alelievr import Alelievr
 from testers.libft.BaseExecutor import (BONUS_FUNCTIONS, PART_1_FUNCTIONS,
-                                        PART_2_FUNCTIONS)
-from testers.libft.Fsoares import Fsoares
-from testers.libft.Tripouille import Tripouille
-from testers.libft.WarMachine import WarMachine
+											PART_2_FUNCTIONS)
+from testers.libft.Unified import Unified
 from utils.ExecutionContext import TestRunInfo, set_bonus
 from utils.TerminalColors import TC
 from utils.Utils import is_makefile_project
@@ -24,8 +21,8 @@ func_regex = re.compile(r"(?:\w+\s+)+\**ft_(\w+)\s*\(.*")
 class Libft(BaseTester):
 
 	name = "libft"
-	my_tester = Fsoares
-	testers = [WarMachine, Tripouille, Alelievr, Fsoares]
+	my_tester = Unified
+	testers = [Unified]
 	timeout = 2
 
 	def __init__(self, info: TestRunInfo) -> None:

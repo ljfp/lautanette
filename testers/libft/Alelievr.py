@@ -1,15 +1,17 @@
 
 import logging
 import os
-from pathlib import Path
 import re
 import subprocess
+from pathlib import Path
 from sys import platform
-from halo import Halo
 from typing import List
-from testers.libft.BaseExecutor import BONUS_FUNCTIONS
-from utils.ExecutionContext import get_timeout, has_bonus
 
+from halo import Halo
+
+from testers.libft.BaseExecutor import BONUS_FUNCTIONS
+from testers.libft.SuiteResult import SuiteResult
+from utils.ExecutionContext import get_timeout, has_bonus
 from utils.TerminalColors import TC
 from utils.Utils import decode_ascii, open_ascii
 
@@ -93,8 +95,12 @@ class Alelievr():
 					print(f"...\n\nFile too large. To see full report open: {TC.PURPLE}{log_path}{TC.NC}\n")
 
 		log_path = Path(self.temp_dir, 'result.log')
+		errors: List[str] = []
 		with open_ascii(log_path) as file:
 			errors = [out_func_line.match(line).group(1) for line in file.readlines() if is_error(line)]
 			if len(errors) > 0:
 				show_file_output(log_path)
-			return errors
+		notes: List[str] = []
+		if errors:
+			notes.append("Inspect result.log for detailed diffs.")
+		return SuiteResult(self.name, errors, [log_path], notes)

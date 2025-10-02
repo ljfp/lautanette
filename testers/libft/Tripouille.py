@@ -1,11 +1,15 @@
+import contextlib
+import io
 import logging
 import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 from halo import Halo
 from testers.libft.BaseExecutor import remove_ansi_colors
+from testers.libft.SuiteResult import SuiteResult
 from utils.ExecutionContext import get_timeout
 from utils.TerminalColors import TC
 from utils.Utils import is_linux
@@ -33,7 +37,7 @@ class Tripouille():
 	def compile_test(self):
 
 		def compile_executable(function, spinner):
-			command = (f"clang++ -ldl -D TIMEOUT={get_timeout()} check.o color.o leaks.o sigsegv.o ft_{function}_test.o" +
+			command = (f"g++ -ldl -D TIMEOUT={get_timeout()} check.o color.o leaks.o sigsegv.o ft_{function}_test.o" +
 			           f" -o ft_{function}.out -L. -lft -I. -I utils")
 			res = subprocess.run(command, shell=True, capture_output=True, text=True)
 			logger.info(res)
@@ -47,7 +51,7 @@ class Tripouille():
 
 		text = f"{TC.CYAN}Compiling tests: {TC.B_WHITE}{self.name}{TC.NC} ({self.git_url})"
 		with Halo(text=text) as spinner:
-			command = f"clang++ -D TIMEOUT={get_timeout()} -c -std=c++11 -I utils/ -I . utils/*.cpp "
+			command = f"g++ -D TIMEOUT={get_timeout()} -c -std=c++11 -I utils/ -I . utils/*.cpp "
 			for file in self.to_execute:
 				command += f"tests/ft_{file}_test.cpp "
 
@@ -102,56 +106,79 @@ class Tripouille():
 
 	def show_failed_tests(self, result):
 
-		def is_failed(test):
-			return test[1] != 'OK' and test[1] != 'MOK'
+		class Tee:
+			def __init__(self, stream):
+				self.stream = stream
+				self.buffer = io.StringIO()
+			def write(self, text):
+				self.stream.write(text)
+				self.buffer.write(text)
+			def flush(self):
+				self.stream.flush()
+			def getvalue(self):
+				return self.buffer.getvalue()
 
-		def match_failed(line, failed_tests):
-			for test in failed_tests:
-				if (re.match(rf"\s+/\*[ \w-]* {test[0]} [ \w-]*\*/ .*", line)):
-					return test
-			return False
+		tee = Tee(sys.stdout)
+		with contextlib.redirect_stdout(tee):
+			def is_failed(test):
+				return test[1] != 'OK' and test[1] != 'MOK'
 
-		def print_error_lines(lines):
-			for i, line, test in lines:
-				print(f"{TC.RED}{test[1].ljust(3)} {TC.YELLOW}{i}: {TC.NC}{line}", end="")
+			def match_failed(line, failed_tests):
+				for test in failed_tests:
+					if (re.match(rf"\s+/\*[ \w-]* {test[0]} [ \w-]*\*/ .*", line)):
+						return test
+				return False
 
-		def show_failed_lines(file, failed_tests):
-			with open(file) as f:
-				lines = f.readlines()
-				result = []
-				for i, line in enumerate(lines):
-					test = match_failed(line, failed_tests)
-					if test:
-						result.append((i, line, test))
-				print_error_lines(result)
+			def print_error_lines(lines):
+				for i, line, test in lines:
+					print(f"{TC.RED}{test[1].ljust(3)} {TC.YELLOW}{i}: {TC.NC}{line}", end="")
 
-		def get_file_path(func):
-			return os.path.join(self.tests_dir, "tests", f"{func}_test.cpp")
+			def show_failed_lines(file, failed_tests):
+				with open(file) as f:
+					lines = f.readlines()
+					result = []
+					for i, line in enumerate(lines):
+						test = match_failed(line, failed_tests)
+						if test:
+							result.append((i, line, test))
+					print_error_lines(result)
 
-		def has_failed(res):
-			failed = False
-			for func, tests in res:
-				for test in tests:
-					if (test[1] == "MKO"):
-						return "MKO"
-					if (is_failed(test)):
-						failed = True
-			return failed
+			def get_file_path(func):
+				return os.path.join(self.tests_dir, "tests", f"{func}_test.cpp")
 
-		errors = has_failed(result)
-		if errors:
-			if str(errors) == "MKO":
-				print(f"{TC.RED}MKO{TC.NC}: test about your malloc size (this shouldn't be tested by moulinette)")
-			print(f"\n{TC.B_RED}Errors in:{TC.NC}\n")
+			def has_failed(res):
+				failed = False
+				for func, tests in res:
+					for test in tests:
+						if (test[1] == "MKO"):
+							return "MKO"
+						if (is_failed(test)):
+							failed = True
+				return failed
 
-		funcs_error = []
-		for func, tests in result:
-			failed = [test for test in tests if is_failed(test)]
-			if failed:
-				test_file = get_file_path(func)
-				print(f"For {TC.B_WHITE}{test_file}{TC.NC}:")
-				show_failed_lines(test_file, failed)
-				print()
-				funcs_error.append(func)
+			errors = has_failed(result)
+			if errors:
+				if str(errors) == "MKO":
+					print(f"{TC.RED}MKO{TC.NC}: test about your malloc size (this shouldn't be tested by moulinette)")
+				print(f"\n{TC.B_RED}Errors in:{TC.NC}\n")
 
-		return funcs_error
+			funcs_error = []
+			for func, tests in result:
+				failed = [test for test in tests if is_failed(test)]
+				if failed:
+					test_file = get_file_path(func)
+					print(f"For {TC.B_WHITE}{test_file}{TC.NC}:")
+					show_failed_lines(test_file, failed)
+					print()
+					funcs_error.append(func)
+
+		log_text = tee.getvalue()
+		log_path = Path(self.temp_dir, "tripouille_failures.log")
+		log_files = []
+		if log_text.strip():
+			log_path.write_text(log_text)
+			log_files.append(log_path)
+		notes = []
+		if errors == "MKO":
+			notes.append("Tripouille flagged malloc size (MKO); subject typically ignores it.")
+		return SuiteResult(self.name, funcs_error, log_files, notes)

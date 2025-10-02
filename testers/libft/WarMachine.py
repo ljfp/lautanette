@@ -8,7 +8,8 @@ from typing import List
 
 from halo import Halo
 from testers.libft.BaseExecutor import (BONUS_FUNCTIONS, PART_1_FUNCTIONS,
-                                        PART_2_FUNCTIONS, remove_ansi_colors)
+											PART_2_FUNCTIONS, remove_ansi_colors)
+from testers.libft.SuiteResult import SuiteResult
 from utils.ExecutionContext import get_timeout
 from utils.TerminalColors import TC
 from utils.Utils import intersection
@@ -137,7 +138,8 @@ class WarMachine():
 				print(f"...\n\nFile too large. To see full report open: {TC.PURPLE}{dest}{TC.NC}\n")
 
 		orig_stdout = sys.stdout
-		with open(Path(self.temp_dir, "errors_color.log"), "w") as error_log:
+		errors_file = Path(self.temp_dir, "errors_color.log")
+		with open(errors_file, "w") as error_log:
 			sys.stdout = error_log
 			parsed = [parse_func(line) for line in output if is_func(line)]
 			sys.stdout = orig_stdout
@@ -148,5 +150,10 @@ class WarMachine():
 			longer = Path(self.temp_dir, "deepthought")
 			print(f"More information in: {TC.PURPLE}{longer}{TC.NC}")
 			print_file_summary(Path(self.temp_dir, 'errors_color.log'))
-			#print(f"and: {TC.B_WHITE}{Path(self.temp_dir, 'errors.log').resolve()}{TC.NC}")
-		return res
+		log_files = []
+		if res and errors_file.exists():
+			log_files.append(errors_file)
+		notes = []
+		if res:
+			notes.append(f"WarMachine captured detailed trace in {Path(self.temp_dir, 'deepthought')}")
+		return SuiteResult(self.name, res, log_files, notes)
